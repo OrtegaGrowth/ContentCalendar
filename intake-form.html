@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OrtegaGrowth — Client Intake Form</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue:        #2563EB;
+    --blue-bright: #3B82F6;
+    --blue-light:  #DBEAFE;
+    --blue-xlight: #EFF6FF;
+    --blue-dark:   #1E3A8A;
+    --blue-deep:   #0F172A;
+    --cyan:        #06B6D4;
+    --gray-50:     #F8FAFC;
+    --gray-100:    #F1F5F9;
+    --gray-300:    #CBD5E1;
+    --gray-400:    #94A3B8;
+    --gray-600:    #475569;
+    --gray-800:    #1E293B;
+    --white:       #ffffff;
+    --red:         #EF4444;
+    --green:       #22C55E;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: linear-gradient(160deg, #EFF6FF 0%, #F0FDFB 50%, #F5F3FF 100%);
+    color: var(--gray-800);
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+  }
+
+  /* HEADER */
+  .page-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .logo {
+    font-family: 'Clash Display', sans-serif;
+    font-weight: 700; font-size: 1.3rem;
+    color: var(--blue-deep); text-decoration: none; letter-spacing: -0.02em;
+    display: inline-block; margin-bottom: 2rem;
+  }
+  .logo span { color: var(--blue); }
+
+  .page-header h1 {
+    font-family: 'Clash Display', sans-serif;
+    font-weight: 700; font-size: clamp(1.8rem, 4vw, 2.6rem);
+    letter-spacing: -0.03em; color: var(--blue-deep);
+    line-height: 1.1; margin-bottom: 0.75rem;
+  }
+
+  .page-header p {
+    font-size: 0.97rem; color: var(--gray-600);
+    max-width: 460px; margin: 0 auto; line-height: 1.7;
+  }
+
+  /* FORM CARD */
+  .form-card {
+    background: var(--white);
+    border-radius: 20px;
+    border: 1.5px solid rgba(37,99,235,0.12);
+    box-shadow: 0 8px 40px rgba(37,99,235,0.08);
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 2.5rem;
+  }
+
+  /* FIELDS */
+  .field-group {
+    margin-bottom: 1.5rem;
+  }
+
+  label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--blue-deep);
+    margin-bottom: 0.45rem;
+  }
+
+  .required-star {
+    color: var(--blue);
+    margin-left: 2px;
+  }
+
+  .optional-tag {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--gray-400);
+    margin-left: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="number"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid var(--gray-300);
+    border-radius: 10px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.92rem;
+    color: var(--gray-800);
+    background: var(--white);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+  }
+
+  input::placeholder, textarea::placeholder { color: var(--gray-400); }
+
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394A3B8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+    cursor: pointer;
+  }
+
+  textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+
+  /* CHECKBOX GROUP */
+  .checkbox-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0.6rem;
+    margin-top: 0.25rem;
+  }
+
+  .checkbox-item {
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.6rem 0.85rem;
+    border: 1.5px solid var(--gray-300);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--gray-600);
+    user-select: none;
+  }
+
+  .checkbox-item:hover { border-color: var(--blue-bright); background: var(--blue-xlight); color: var(--blue-dark); }
+
+  .checkbox-item input[type="checkbox"] {
+    width: 16px; height: 16px; min-width: 16px;
+    border: 1.5px solid var(--gray-300);
+    border-radius: 4px;
+    cursor: pointer;
+    accent-color: var(--blue);
+    padding: 0;
+  }
+
+  .checkbox-item.checked {
+    border-color: var(--blue);
+    background: var(--blue-xlight);
+    color: var(--blue-dark);
+  }
+
+  /* RADIO GROUP */
+  .radio-group {
+    display: flex; flex-direction: column; gap: 0.6rem;
+    margin-top: 0.25rem;
+  }
+
+  .radio-item {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    border: 1.5px solid var(--gray-300);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .radio-item:hover { border-color: var(--blue-bright); background: var(--blue-xlight); }
+
+  .radio-item input[type="radio"] {
+    width: 16px; height: 16px; min-width: 16px;
+    margin-top: 2px;
+    accent-color: var(--blue);
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .radio-item.selected {
+    border-color: var(--blue);
+    background: var(--blue-xlight);
+  }
+
+  .radio-label { font-size: 0.875rem; font-weight: 600; color: var(--blue-deep); }
+  .radio-desc  { font-size: 0.78rem; color: var(--gray-600); margin-top: 1px; }
+
+  /* DIVIDER */
+  .section-divider {
+    border: none; border-top: 1px solid var(--blue-light);
+    margin: 2rem 0;
+  }
+
+  .section-label {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--blue);
+    margin-bottom: 1.25rem;
+  }
+
+  /* ERROR */
+  .field-error {
+    font-size: 0.78rem; color: var(--red);
+    margin-top: 0.35rem; display: none;
+  }
+  .field-group.has-error input,
+  .field-group.has-error select,
+  .field-group.has-error textarea {
+    border-color: var(--red);
+  }
+  .field-group.has-error .field-error { display: block; }
+  .field-group.has-error .checkbox-group,
+  .field-group.has-error .radio-group {
+    outline: 2px solid rgba(239,68,68,0.25);
+    border-radius: 10px;
+    padding: 4px;
+  }
+
+  /* SUBMIT */
+  .submit-btn {
+    width: 100%;
+    background: var(--blue); color: var(--white);
+    padding: 1rem; border-radius: 10px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1rem; font-weight: 700;
+    border: none; cursor: pointer;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 18px rgba(37,99,235,0.3);
+    margin-top: 0.5rem;
+    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  }
+  .submit-btn:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,99,235,0.35); }
+  .submit-btn:active { transform: translateY(0); }
+
+  /* SUCCESS STATE */
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 3rem 2rem;
+  }
+  .success-icon {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue) 0%, var(--cyan) 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; margin: 0 auto 1.5rem;
+    box-shadow: 0 8px 24px rgba(37,99,235,0.3);
+  }
+  .success-screen h2 {
+    font-family: 'Clash Display', sans-serif;
+    font-size: 1.8rem; font-weight: 700;
+    color: var(--blue-deep); letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+  }
+  .success-screen p { font-size: 0.95rem; color: var(--gray-600); line-height: 1.7; max-width: 380px; margin: 0 auto 1.75rem; }
+  .back-link {
+    display: inline-block; color: var(--blue); font-weight: 600;
+    font-size: 0.9rem; text-decoration: none;
+    border-bottom: 2px solid var(--blue-light); padding-bottom: 1px;
+    transition: border-color 0.2s;
+  }
+  .back-link:hover { border-color: var(--blue); }
+
+  /* NOTE */
+  .form-note {
+    text-align: center; font-size: 0.78rem; color: var(--gray-400);
+    margin-top: 1.25rem; line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="index.html" class="logo">Ortega<span>Growth</span></a>
+  <h1>Let's get you growing 🚀</h1>
+  <p>Fill out the form below and we'll get your content calendar started. Whether you're a small business or an influencer, fields marked with <strong style="color:var(--blue);">*</strong> are required.</p>
+</div>
+
+<div class="form-card">
+
+  <!-- SUCCESS SCREEN -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">🎉</div>
+    <h2>You're all set!</h2>
+    <p>Thanks for submitting! We'll review your info and reach out to <span id="confirmEmail" style="color:var(--blue); font-weight:600;"></span> within 24–48 hours to get your calendar started.</p>
+    <a href="index.html" class="back-link">← Back to OrtegaGrowth</a>
+  </div>
+
+  <!-- FORM -->
+  <form id="intakeForm" novalidate>
+
+    <div class="section-label">Your Info</div>
+
+    <div class="field-group" id="fg-name">
+      <label for="fullName">Full Name <span class="required-star">*</span></label>
+      <input type="text" id="fullName" name="fullName" placeholder="e.g. Jordan Smith" />
+      <div class="field-error">Please enter your full name.</div>
+    </div>
+
+    <div class="field-group" id="fg-email">
+      <label for="email">Email Address <span class="required-star">*</span></label>
+      <input type="email" id="email" name="email" placeholder="e.g. jordan@email.com" />
+      <div class="field-error">Please enter a valid email address.</div>
+    </div>
+
+    <hr class="section-divider">
+    <div class="section-label">Your Plan</div>
+
+    <div class="field-group" id="fg-plan">
+      <label>Which plan are you interested in? <span class="required-star">*</span></label>
+      <div class="radio-group">
+        <label class="radio-item">
+          <input type="radio" name="plan" value="Starter">
+          <div>
+            <div class="radio-label">Starter — $49</div>
+            <div class="radio-desc">1 platform · 30-day calendar · 1 revision</div>
+          </div>
+        </label>
+        <label class="radio-item">
+          <input type="radio" name="plan" value="Growth">
+          <div>
+            <div class="radio-label">Growth — $89 ⭐ Most Popular</div>
+            <div class="radio-desc">Up to 3 platforms · captions & hooks · 2 revisions</div>
+          </div>
+        </label>
+        <label class="radio-item">
+          <input type="radio" name="plan" value="Pro">
+          <div>
+            <div class="radio-label">Pro — $149</div>
+            <div class="radio-desc">Unlimited platforms · video briefs · monthly call</div>
+          </div>
+        </label>
+      </div>
+      <div class="field-error">Please select a plan.</div>
+    </div>
+
+    <hr class="section-divider">
+    <div class="section-label">Your Content</div>
+
+    <div class="field-group" id="fg-niche">
+      <label for="niche">What is your niche or content topic? <span class="required-star">*</span></label>
+      <input type="text" id="niche" name="niche" placeholder="e.g. fitness, personal finance, cooking, lifestyle…" />
+      <div class="field-error">Please describe your niche.</div>
+    </div>
+
+    <div class="field-group" id="fg-platforms">
+      <label>Which platforms do you post on? <span class="required-star">*</span></label>
+      <div class="checkbox-group">
+        <label class="checkbox-item"><input type="checkbox" name="platforms" value="Instagram"> Instagram</label>
+        <label class="checkbox-item"><input type="checkbox" name="platforms" value="TikTok"> TikTok</label>
+        <label class="checkbox-item"><input type="checkbox" name="platforms" value="YouTube Shorts"> YouTube Shorts</label>
+        <label class="checkbox-item"><input type="checkbox" name="platforms" value="Twitter/X"> Twitter / X</label>
+        <label class="checkbox-item"><input type="checkbox" name="platforms" value="LinkedIn"> LinkedIn</label>
+        <label class="checkbox-item"><input type="checkbox" name="platforms" value="Pinterest"> Pinterest</label>
+      </div>
+      <div class="field-error">Please select at least one platform.</div>
+    </div>
+
+    <div class="field-group" id="fg-followers">
+      <label for="followers">Current follower count (on your main platform) <span class="required-star">*</span></label>
+      <input type="number" id="followers" name="followers" placeholder="e.g. 1200" min="0" />
+      <div class="field-error">Please enter your follower count.</div>
+    </div>
+
+    <div class="field-group" id="fg-goal">
+      <label for="goal">What is your main goal? <span class="required-star">*</span></label>
+      <select id="goal" name="goal">
+        <option value="" disabled selected>Select your main goal…</option>
+        <option value="Grow my following">Grow my following</option>
+        <option value="Increase engagement">Increase engagement</option>
+        <option value="Monetize my content">Monetize my content</option>
+        <option value="Build brand awareness">Build brand awareness</option>
+        <option value="Drive traffic to a product or service">Drive traffic to a product or service</option>
+        <option value="Post more consistently">Post more consistently</option>
+        <option value="All of the above">All of the above</option>
+      </select>
+      <div class="field-error">Please select your main goal.</div>
+    </div>
+
+    <hr class="section-divider">
+    <div class="section-label">Anything else? <span class="optional-tag">Optional</span></div>
+
+    <div class="field-group">
+      <label for="extra">Is there anything else you'd like us to know? <span class="optional-tag">Optional</span></label>
+      <textarea id="extra" name="extra" placeholder="Your posting history, past struggles, specific content ideas, tone preferences — anything helps!"></textarea>
+    </div>
+
+    <button type="submit" class="submit-btn">Submit my intake form →</button>
+
+    <p class="form-note">We'll review your form and follow up within 24–48 hours at the email you provided.</p>
+
+  </form>
+</div>
+
+<script>
+  // Highlight radio/checkbox items visually on select
+  document.querySelectorAll('.radio-item input[type="radio"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('selected'));
+      radio.closest('.radio-item').classList.add('selected');
+    });
+  });
+
+  document.querySelectorAll('.checkbox-item input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', () => {
+      cb.closest('.checkbox-item').classList.toggle('checked', cb.checked);
+    });
+  });
+
+  // Form validation & submission
+  document.getElementById('intakeForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    let valid = true;
+
+    // Full name
+    const name = document.getElementById('fullName');
+    const fgName = document.getElementById('fg-name');
+    if (!name.value.trim()) { fgName.classList.add('has-error'); valid = false; }
+    else fgName.classList.remove('has-error');
+
+    // Email
+    const email = document.getElementById('email');
+    const fgEmail = document.getElementById('fg-email');
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
+    if (!emailOk) { fgEmail.classList.add('has-error'); valid = false; }
+    else fgEmail.classList.remove('has-error');
+
+    // Plan
+    const plan = document.querySelector('input[name="plan"]:checked');
+    const fgPlan = document.getElementById('fg-plan');
+    if (!plan) { fgPlan.classList.add('has-error'); valid = false; }
+    else fgPlan.classList.remove('has-error');
+
+    // Niche
+    const niche = document.getElementById('niche');
+    const fgNiche = document.getElementById('fg-niche');
+    if (!niche.value.trim()) { fgNiche.classList.add('has-error'); valid = false; }
+    else fgNiche.classList.remove('has-error');
+
+    // Platforms
+    const platforms = document.querySelectorAll('input[name="platforms"]:checked');
+    const fgPlatforms = document.getElementById('fg-platforms');
+    if (platforms.length === 0) { fgPlatforms.classList.add('has-error'); valid = false; }
+    else fgPlatforms.classList.remove('has-error');
+
+    // Followers
+    const followers = document.getElementById('followers');
+    const fgFollowers = document.getElementById('fg-followers');
+    if (!followers.value.trim() || isNaN(followers.value)) { fgFollowers.classList.add('has-error'); valid = false; }
+    else fgFollowers.classList.remove('has-error');
+
+    // Goal
+    const goal = document.getElementById('goal');
+    const fgGoal = document.getElementById('fg-goal');
+    if (!goal.value) { fgGoal.classList.add('has-error'); valid = false; }
+    else fgGoal.classList.remove('has-error');
+
+    if (!valid) {
+      document.querySelector('.has-error').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    // Show success
+    document.getElementById('confirmEmail').textContent = email.value.trim();
+    document.getElementById('intakeForm').style.display = 'none';
+    const success = document.getElementById('successScreen');
+    success.style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+
+</body>
+</html>
